@@ -10,7 +10,7 @@
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-indigo-50 text-slate-900">
   <div class="max-w-5xl mx-auto px-4 py-8">
     <!-- 헤더 -->
-    <header class="mb-8">
+    <header class="mb-4">
       <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-indigo-600 to-emerald-600">
         2025년 업무지원 설문조사
       </h1>
@@ -20,21 +20,17 @@
       </p>
     </header>
 
-    <!-- ID 입력 영역 -->
-    <section class="mb-6 rounded-2xl bg-white/80 border border-slate-200 p-4 shadow-sm">
-      <label for="employee-id" class="block text-sm md:text-base font-semibold text-slate-800 mb-1">
-        ID (사번 또는 이름)
-      </label>
-      <input
-        id="employee-id"
-        type="text"
-        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm md:text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/80 focus:border-sky-500"
-        placeholder="예: 12345 또는 홍길동"
-      />
-      <p class="mt-1 text-xs md:text-sm text-slate-500">
-        응답 결과 분석을 위한 용도로 사용됩니다.
-      </p>
-    </section>
+    <!-- 기존 응답 ID 안내 배너 -->
+    <div
+      id="current-id-banner"
+      class="hidden mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-sm md:text-base text-emerald-900 flex items-center gap-2"
+    >
+      <span class="text-lg">✅</span>
+      <div>
+        <span class="font-semibold">이전에 응답한 기록이 있습니다.</span>
+        <span class="ml-2">응답 ID: <span id="current-id-text" class="font-bold"></span></span>
+      </div>
+    </div>
 
     <!-- 단계 인디케이터 -->
     <div class="flex items-center gap-3 text-sm md:text-base mb-6">
@@ -117,8 +113,10 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsZeMZE6-1Mgtpzuk2O9ORnO0Y-1k_BZg4xDydOoATeCevJimOjFdxG9kh4BSRVA2y/exec";
     // ============================================================
 
-    // 클라이언트 IP 저장용
+    // 클라이언트 IP 및 이전 응답 저장용
     let clientIp = "";
+    let previousId = null;
+    let previousAnswers = null; // { Q1: "...", Q2: "...", ... }
 
     async function fetchClientIp() {
       try {
@@ -128,6 +126,33 @@
         console.log("Client IP:", clientIp);
       } catch (e) {
         console.error("IP 조회 실패:", e);
+      }
+    }
+
+    async function loadPreviousResponse() {
+      if (!clientIp) return;
+      try {
+        const res = await fetch(`${SCRIPT_URL}?ip=${encodeURIComponent(clientIp)}`);
+        if (!res.ok) {
+          console.warn("이전 응답 조회 실패:", res.status);
+          return;
+        }
+        const data = await res.json();
+        if (data && data.exists) {
+          previousId = data.ID;
+          previousAnswers = {};
+          for (let i = 1; i <= 50; i++) {
+            const key = "Q" + i;
+            previousAnswers[key] = data[key] || "";
+          }
+          // 배너 표시
+          const banner = document.getElementById("current-id-banner");
+          const bannerText = document.getElementById("current-id-text");
+          bannerText.textContent = previousId;
+          banner.classList.remove("hidden");
+        }
+      } catch (e) {
+        console.error("loadPreviousResponse 에러:", e);
       }
     }
 
@@ -158,7 +183,7 @@
       etc: "📝"
     };
 
-    // 설문 데이터 정의 (이전 버전과 동일)
+    // 설문 데이터 (이전 설계 그대로)
     const topics = [
       {
         id: "interior",
@@ -349,7 +374,6 @@
     const surveyForm = document.getElementById("survey-form");
     const stepIndicator1 = document.getElementById("step-indicator-1");
     const stepIndicator2 = document.getElementById("step-indicator-2");
-    const employeeIdInput = document.getElementById("employee-id");
 
     // 주제 카드 렌더링
     function renderTopicCards() {
@@ -503,6 +527,55 @@
 
       const submitBtnWrapper = surveyForm.lastElementChild;
       surveyForm.insertBefore(fragment, submitBtnWrapper);
+
+      // 이전 응답 있으면 값 채우기
+      applyPreviousAnswers();
+    }
+
+    // 이전 응답을 폼에 반영
+    function applyPreviousAnswers() {
+      if (!previousAnswers) return;
+
+      topics.forEach(topic => {
+        if (!selectedTopicIds.has(topic.id)) return;
+
+        topic.questions.forEach(q => {
+          const key = "Q" + q.number;
+          const val = previousAnswers[key];
+          if (!val) return;
+
+          if (q.type === "single") {
+            const radios = surveyForm.querySelectorAll(
+              `input[name="answers[${q.number}][choice]"]`
+            );
+            radios.forEach(r => {
+              if (r.value === val) r.checked = true;
+            });
+          } else if (q.type === "multi") {
+            const parts = val.split(",").map(s => s.trim()).filter(Boolean);
+            const checks = surveyForm.querySelectorAll(
+              `input[name="answers[${q.number}][choices][]"]`
+            );
+            checks.forEach(chk => {
+              if (parts.includes(chk.value)) chk.checked = true;
+            });
+            const otherPart = parts.find(p => p.startsWith("기타:"));
+            if (otherPart) {
+              const input = surveyForm.querySelector(
+                `input[name="answers[${q.number}][other]"]`
+              );
+              if (input) {
+                input.value = otherPart.replace(/^기타:\s*/, "");
+              }
+            }
+          } else if (q.type === "text") {
+            const ta = surveyForm.querySelector(
+              `textarea[name="answers[${q.number}][text]"]`
+            );
+            if (ta) ta.value = val;
+          }
+        });
+      });
     }
 
     // Q1~Q50 값 수집 (질문 번호 기준)
@@ -577,15 +650,14 @@
         "w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70";
     }
 
-    // 제출 → Google Apps Script로 전송 (ID, IP, Q1~Q50)
+    // 제출 → Google Apps Script로 전송 (IP + Q1~Q50)
     surveyForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const answers = collectAnswersByQuestion();
 
       const payload = {
-        ID: (employeeIdInput.value || "").trim(),
-        IP: clientIp || "",
+        IP: clientIp || ""
       };
 
       for (let i = 1; i <= 50; i++) {
@@ -596,18 +668,37 @@
       console.log("전송 데이터:", payload);
 
       try {
-        await fetch(SCRIPT_URL, {
+        const res = await fetch(SCRIPT_URL, {
           method: "POST",
-          mode: "no-cors",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
         });
 
-        alert("설문이 제출되었습니다. 감사합니다!");
-        surveyForm.reset();
-        backToTopicStep();
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (e) {
+          console.warn("JSON 응답 파싱 실패:", e);
+        }
+
+        if (data && data.status === "ok") {
+          if (data.ID) {
+            previousId = data.ID;
+            const banner = document.getElementById("current-id-banner");
+            const bannerText = document.getElementById("current-id-text");
+            bannerText.textContent = previousId;
+            banner.classList.remove("hidden");
+          }
+          alert("설문이 제출되었습니다. 감사합니다!");
+        } else {
+          alert("설문이 제출되었습니다. (응답 처리 상태를 확인하지 못했습니다)");
+        }
+
+        // 폼 리셋 후 다시 로딩할지 여부는 운영 정책에 맞게 조정
+        // surveyForm.reset();
+        // backToTopicStep();
       } catch (error) {
         console.error("전송 오류:", error);
         alert("제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
@@ -615,8 +706,9 @@
     });
 
     // 초기 실행
-    document.addEventListener("DOMContentLoaded", () => {
-      fetchClientIp();
+    document.addEventListener("DOMContentLoaded", async () => {
+      await fetchClientIp();
+      await loadPreviousResponse();
       renderTopicCards();
       btnGoToSurvey.addEventListener("click", goToSurveyStep);
       btnBack.addEventListener("click", backToTopicStep);
