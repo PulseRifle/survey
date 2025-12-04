@@ -32,129 +32,151 @@
       </div>
     </div>
 
-    <!-- 단계 인디케이터 -->
-    <div class="flex items-center gap-3 text-sm md:text-base mb-6">
-      <div class="flex items-center gap-2">
-        <div id="step-indicator-1" class="w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm">
-          1
+    <!-- 설문 플로우 영역 (단계 + 설문 화면) -->
+    <div id="survey-flow">
+      <!-- 단계 인디케이터 -->
+      <div class="flex items-center gap-3 text-sm md:text-base mb-6">
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-1" class="w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm">
+            1
+          </div>
+          <span class="font-semibold text-slate-800">주제 선택</span>
         </div>
-        <span class="font-semibold text-slate-800">주제 선택</span>
-      </div>
-      <div class="h-px flex-1 bg-gradient-to-r from-sky-200 via-slate-200 to-indigo-200"></div>
-      <div class="flex items-center gap-2">
-        <div id="step-indicator-2" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70">
-          2
-        </div>
-        <span class="font-semibold text-slate-400">설문 응답</span>
-      </div>
-    </div>
-
-    <!-- 1단계: 주제 선택 -->
-    <section id="step-topics" class="space-y-6">
-      <div class="flex items-start justify-between gap-4">
-        <div>
-          <h2 class="text-xl md:text-2xl font-bold mb-1 text-slate-900">관심 있는 주제를 선택해 주세요</h2>
-          <p class="text-sm md:text-base text-slate-600">
-            중복 선택이 가능합니다. 선택한 주제에 해당하는 항목만 설문에 표시됩니다.
-          </p>
+        <div class="h-px flex-1 bg-gradient-to-r from-sky-200 via-slate-200 to-indigo-200"></div>
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-2" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70">
+            2
+          </div>
+          <span class="font-semibold text-slate-400">설문 응답</span>
         </div>
       </div>
 
-      <!-- 주제 목록 -->
-      <div id="topic-list" class="grid gap-4 md:grid-cols-2">
-        <!-- JS에서 동적으로 생성 -->
-      </div>
-
-      <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
-        <button
-          id="btn-go-to-survey"
-          class="inline-flex items-center justify-center rounded-2xl border border-sky-600 bg-gradient-to-r from-sky-500 to-indigo-500 px-5 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-sky-600 hover:to-indigo-600 active:scale-[0.99] transition-transform"
-        >
-          다음 단계로
-        </button>
-      </div>
-    </section>
-
-    <!-- 2단계: 설문 -->
-    <section id="step-survey" class="space-y-6 hidden">
-      <div class="flex items-start justify-between gap-4">
-        <div>
-          <h2 class="text-xl md:text-2xl font-bold mb-1 text-slate-900">선택한 주제에 대한 설문</h2>
-          <p class="text-sm md:text-base text-slate-600">
-            선택하지 않은 주제의 응답은 시스템에서 <span class="font-semibold text-sky-700">미응답 처리</span>됩니다.
-          </p>
+      <!-- 1단계: 주제 선택 -->
+      <section id="step-topics" class="space-y-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold mb-1 text-slate-900">관심 있는 주제를 선택해 주세요</h2>
+            <p class="text-sm md:text-base text-slate-600">
+              중복 선택이 가능합니다. 선택한 주제에 해당하는 항목만 설문에 표시됩니다.
+            </p>
+          </div>
+          <button
+            id="btn-select-all-topics"
+            type="button"
+            class="inline-flex items-center rounded-xl border border-sky-500 bg-white/80 px-3 py-1.5 text-xs md:text-sm font-semibold text-sky-700 hover:bg-sky-50 shadow-sm"
+          >
+            모두 선택
+          </button>
         </div>
-        <button
-          id="btn-back"
-          type="button"
-          class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm md:text-base font-medium text-slate-700 hover:bg-slate-100 shadow-sm"
-        >
-          &larr; 주제 다시 선택
-        </button>
-      </div>
 
-      <form id="survey-form" class="space-y-6">
-        <!-- JS에서 설문 문항 섹션 동적으로 생성 -->
+        <!-- 주제 목록 -->
+        <div id="topic-list" class="grid gap-4 md:grid-cols-2">
+          <!-- JS에서 동적으로 생성 -->
+        </div>
 
         <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
           <button
-            type="submit"
-            class="inline-flex items-center justify-center rounded-2xl border border-emerald-600 bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] transition-transform"
+            id="btn-go-to-survey"
+            class="inline-flex items-center justify-center rounded-2xl border border-sky-600 bg-gradient-to-r from-sky-500 to-indigo-500 px-5 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-sky-600 hover:to-indigo-600 active:scale-[0.99] transition-transform"
           >
-            설문 제출
+            다음 단계로
           </button>
         </div>
-      </form>
+      </section>
+
+      <!-- 2단계: 설문 -->
+      <section id="step-survey" class="space-y-6 hidden">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold mb-1 text-slate-900">선택한 주제에 대한 설문</h2>
+            <p class="text-sm md:text-base text-slate-600">
+              선택하지 않은 주제의 응답은 시스템에서 <span class="font-semibold text-sky-700">미응답 처리</span>됩니다.
+            </p>
+          </div>
+          <button
+            id="btn-back"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm md:text-base font-medium text-slate-700 hover:bg-slate-100 shadow-sm"
+          >
+            &larr; 주제 다시 선택
+          </button>
+        </div>
+
+        <form id="survey-form" class="space-y-6">
+          <!-- JS에서 설문 문항 섹션 동적으로 생성 -->
+
+          <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
+            <button
+              id="btn-temp-save"
+              type="button"
+              class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white/90 px-5 py-3 text-sm md:text-base font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+            >
+              임시 저장
+            </button>
+            <button
+              id="btn-final-submit"
+              type="button"
+              class="inline-flex items-center justify-center rounded-2xl border border-emerald-600 bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] transition-transform"
+            >
+              설문 제출
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- 제출 완료 화면 -->
+    <section
+      id="completion-screen"
+      class="hidden mt-10 flex flex-col items-center justify-center text-center"
+    >
+      <div class="max-w-xl w-full rounded-3xl border border-emerald-200 bg-emerald-50/90 px-6 py-10 shadow-md">
+        <div class="text-4xl mb-3">🎉</div>
+        <h2 class="text-2xl md:text-3xl font-bold text-emerald-800 mb-3">
+          설문 제출을 완료하였습니다
+        </h2>
+        <p class="text-sm md:text-base text-emerald-900 mb-2">
+          소중한 의견 감사합니다. 내용은 향후 업무지원 서비스 개선에 적극 반영하겠습니다.
+        </p>
+        <p class="text-xs md:text-sm text-emerald-900/80">
+          응답 ID: <span id="completion-id-text" class="font-semibold"></span>
+        </p>
+      </div>
     </section>
   </div>
 
   <script>
-    // ==== 여기에 본인이 배포한 Google Apps Script 웹 앱 URL 넣기 ====
+    // ==== 본인 Google Apps Script 웹앱 URL로 교체 ====
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsZeMZE6-1Mgtpzuk2O9ORnO0Y-1k_BZg4xDydOoATeCevJimOjFdxG9kh4BSRVA2y/exec";
-    // ============================================================
+    // =================================================
 
-    // 클라이언트 IP 및 이전 응답 저장용
+    // 상태 저장용
     let clientIp = "";
     let previousId = null;
-    let previousAnswers = null; // { Q1: "...", Q2: "...", ... }
+    let previousAnswers = null; // { Q1: "...", ... }
+    let previousStatus = null;  // "TEMP" | "FINAL" | null
+    let isFinalSubmitted = false;
 
-    async function fetchClientIp() {
-      try {
-        const res = await fetch("https://api.ipify.org?format=json");
-        const data = await res.json();
-        clientIp = data.ip;
-        console.log("Client IP:", clientIp);
-      } catch (e) {
-        console.error("IP 조회 실패:", e);
-      }
-    }
+    // DOM 요소
+    const topicListEl = document.getElementById("topic-list");
+    const stepTopicsEl = document.getElementById("step-topics");
+    const stepSurveyEl = document.getElementById("step-survey");
+    const btnGoToSurvey = document.getElementById("btn-go-to-survey");
+    const btnBack = document.getElementById("btn-back");
+    const surveyForm = document.getElementById("survey-form");
+    const stepIndicator1 = document.getElementById("step-indicator-1");
+    const stepIndicator2 = document.getElementById("step-indicator-2");
+    const currentIdBanner = document.getElementById("current-id-banner");
+    const currentIdText = document.getElementById("current-id-text");
+    const surveyFlowEl = document.getElementById("survey-flow");
+    const completionScreenEl = document.getElementById("completion-screen");
+    const completionIdText = document.getElementById("completion-id-text");
+    const btnSelectAllTopics = document.getElementById("btn-select-all-topics");
+    const btnTempSave = document.getElementById("btn-temp-save");
+    const btnFinalSubmit = document.getElementById("btn-final-submit");
 
-    async function loadPreviousResponse() {
-      if (!clientIp) return;
-      try {
-        const res = await fetch(`${SCRIPT_URL}?ip=${encodeURIComponent(clientIp)}`);
-        if (!res.ok) {
-          console.warn("이전 응답 조회 실패:", res.status);
-          return;
-        }
-        const data = await res.json();
-        if (data && data.exists) {
-          previousId = data.ID;
-          previousAnswers = {};
-          for (let i = 1; i <= 50; i++) {
-            const key = "Q" + i;
-            previousAnswers[key] = data[key] || "";
-          }
-          // 배너 표시
-          const banner = document.getElementById("current-id-banner");
-          const bannerText = document.getElementById("current-id-text");
-          bannerText.textContent = previousId;
-          banner.classList.remove("hidden");
-        }
-      } catch (e) {
-        console.error("loadPreviousResponse 에러:", e);
-      }
-    }
+    // 선택된 주제
+    let selectedTopicIds = new Set();
 
     // 만족도 공통 옵션
     const satisfactionOptions = [
@@ -183,7 +205,7 @@
       etc: "📝"
     };
 
-    // 설문 데이터 (이전 설계 그대로)
+    // 설문 데이터 (이전과 동일)
     const topics = [
       {
         id: "interior",
@@ -362,18 +384,54 @@
       }
     ];
 
-    // 선택된 주제
-    let selectedTopicIds = new Set();
+    // IP 가져오기
+    async function fetchClientIp() {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        clientIp = data.ip;
+        console.log("Client IP:", clientIp);
+      } catch (e) {
+        console.error("IP 조회 실패:", e);
+      }
+    }
 
-    // DOM 요소
-    const topicListEl = document.getElementById("topic-list");
-    const stepTopicsEl = document.getElementById("step-topics");
-    const stepSurveyEl = document.getElementById("step-survey");
-    const btnGoToSurvey = document.getElementById("btn-go-to-survey");
-    const btnBack = document.getElementById("btn-back");
-    const surveyForm = document.getElementById("survey-form");
-    const stepIndicator1 = document.getElementById("step-indicator-1");
-    const stepIndicator2 = document.getElementById("step-indicator-2");
+    // 기존 응답 조회
+    async function loadPreviousResponse() {
+      if (!clientIp) return;
+      try {
+        const res = await fetch(`${SCRIPT_URL}?ip=${encodeURIComponent(clientIp)}`);
+        if (!res.ok) {
+          console.warn("이전 응답 조회 실패:", res.status);
+          return;
+        }
+        const data = await res.json();
+        if (data && data.exists) {
+          previousId = data.ID;
+          previousStatus = data.STATUS || null;
+
+          if (previousStatus === "FINAL") {
+            isFinalSubmitted = true;
+            if (previousId) {
+              completionIdText.textContent = previousId;
+            }
+            showCompletionScreen();
+            return;
+          }
+
+          previousAnswers = {};
+          for (let i = 1; i <= 50; i++) {
+            const key = "Q" + i;
+            previousAnswers[key] = data[key] || "";
+          }
+
+          currentIdText.textContent = previousId;
+          currentIdBanner.classList.remove("hidden");
+        }
+      } catch (e) {
+        console.error("loadPreviousResponse 에러:", e);
+      }
+    }
 
     // 주제 카드 렌더링
     function renderTopicCards() {
@@ -578,9 +636,9 @@
       });
     }
 
-    // Q1~Q50 값 수집 (질문 번호 기준)
+    // Q1~Q50 값 수집
     function collectAnswersByQuestion() {
-      const result = {}; // { Q1: "...", Q2: "...", ... }
+      const result = {};
 
       topics.forEach(topic => {
         topic.questions.forEach(q => {
@@ -615,7 +673,15 @@
       return result;
     }
 
-    // 화면 전환
+    // 모두 선택 버튼
+    function selectAllTopics() {
+      const checkboxes = topicListEl.querySelectorAll("input[type='checkbox']");
+      checkboxes.forEach(cb => {
+        cb.checked = true;
+      });
+    }
+
+    // 단계 전환
     function goToSurveyStep() {
       const checkboxes = topicListEl.querySelectorAll("input[type='checkbox']");
       selectedTopicIds = new Set(
@@ -650,14 +716,23 @@
         "w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70";
     }
 
-    // 제출 → Google Apps Script로 전송 (IP + Q1~Q50)
-    surveyForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
+    // 제출 완료 화면 보여주기
+    function showCompletionScreen() {
+      isFinalSubmitted = true;
+      surveyFlowEl.classList.add("hidden");
+      completionScreenEl.classList.remove("hidden");
+      if (previousId) {
+        completionIdText.textContent = previousId;
+      }
+    }
 
+    // 서버로 저장 (mode: "TEMP" | "FINAL")
+    async function saveSurvey(mode) {
       const answers = collectAnswersByQuestion();
 
       const payload = {
-        IP: clientIp || ""
+        IP: clientIp || "",
+        mode: mode
       };
 
       for (let i = 1; i <= 50; i++) {
@@ -676,42 +751,43 @@
           body: JSON.stringify(payload),
         });
 
-        let data = null;
-        try {
-          data = await res.json();
-        } catch (e) {
-          console.warn("JSON 응답 파싱 실패:", e);
-        }
-
+        const data = await res.json();
         if (data && data.status === "ok") {
           if (data.ID) {
             previousId = data.ID;
-            const banner = document.getElementById("current-id-banner");
-            const bannerText = document.getElementById("current-id-text");
-            bannerText.textContent = previousId;
-            banner.classList.remove("hidden");
+            currentIdText.textContent = previousId;
+            currentIdBanner.classList.remove("hidden");
+            completionIdText.textContent = previousId;
           }
-          alert("설문이 제출되었습니다. 감사합니다!");
-        } else {
-          alert("설문이 제출되었습니다. (응답 처리 상태를 확인하지 못했습니다)");
-        }
 
-        // 폼 리셋 후 다시 로딩할지 여부는 운영 정책에 맞게 조정
-        // surveyForm.reset();
-        // backToTopicStep();
+          if (mode === "TEMP") {
+            alert("임시 저장되었습니다.");
+          } else if (mode === "FINAL") {
+            alert("설문 제출을 완료하였습니다.");
+            showCompletionScreen();
+          }
+        } else {
+          alert("저장 처리 중 오류가 발생했습니다.");
+        }
       } catch (error) {
         console.error("전송 오류:", error);
         alert("제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
       }
-    });
+    }
 
     // 초기 실행
     document.addEventListener("DOMContentLoaded", async () => {
       await fetchClientIp();
       await loadPreviousResponse();
-      renderTopicCards();
-      btnGoToSurvey.addEventListener("click", goToSurveyStep);
-      btnBack.addEventListener("click", backToTopicStep);
+
+      if (!isFinalSubmitted) {
+        renderTopicCards();
+        btnGoToSurvey.addEventListener("click", goToSurveyStep);
+        btnBack.addEventListener("click", backToTopicStep);
+        btnSelectAllTopics.addEventListener("click", selectAllTopics);
+        btnTempSave.addEventListener("click", () => saveSurvey("TEMP"));
+        btnFinalSubmit.addEventListener("click", () => saveSurvey("FINAL"));
+      }
     });
   </script>
 </body>
