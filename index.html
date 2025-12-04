@@ -20,6 +20,22 @@
       </p>
     </header>
 
+    <!-- ID 입력 영역 -->
+    <section class="mb-6 rounded-2xl bg-white/80 border border-slate-200 p-4 shadow-sm">
+      <label for="employee-id" class="block text-sm md:text-base font-semibold text-slate-800 mb-1">
+        ID (사번 또는 이름)
+      </label>
+      <input
+        id="employee-id"
+        type="text"
+        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm md:text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/80 focus:border-sky-500"
+        placeholder="예: 12345 또는 홍길동"
+      />
+      <p class="mt-1 text-xs md:text-sm text-slate-500">
+        응답 결과 분석을 위한 용도로 사용됩니다.
+      </p>
+    </section>
+
     <!-- 단계 인디케이터 -->
     <div class="flex items-center gap-3 text-sm md:text-base mb-6">
       <div class="flex items-center gap-2">
@@ -101,6 +117,20 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsZeMZE6-1Mgtpzuk2O9ORnO0Y-1k_BZg4xDydOoATeCevJimOjFdxG9kh4BSRVA2y/exec";
     // ============================================================
 
+    // 클라이언트 IP 저장용
+    let clientIp = "";
+
+    async function fetchClientIp() {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        clientIp = data.ip;
+        console.log("Client IP:", clientIp);
+      } catch (e) {
+        console.error("IP 조회 실패:", e);
+      }
+    }
+
     // 만족도 공통 옵션
     const satisfactionOptions = [
       "매우 만족",
@@ -128,7 +158,7 @@
       etc: "📝"
     };
 
-    // 설문 데이터(앞에서 만들었던 것 그대로)
+    // 설문 데이터 정의 (이전 버전과 동일)
     const topics = [
       {
         id: "interior",
@@ -307,7 +337,7 @@
       }
     ];
 
-    // 선택된 주제 세트
+    // 선택된 주제
     let selectedTopicIds = new Set();
 
     // DOM 요소
@@ -319,6 +349,7 @@
     const surveyForm = document.getElementById("survey-form");
     const stepIndicator1 = document.getElementById("step-indicator-1");
     const stepIndicator2 = document.getElementById("step-indicator-2");
+    const employeeIdInput = document.getElementById("employee-id");
 
     // 주제 카드 렌더링
     function renderTopicCards() {
@@ -436,14 +467,14 @@
       `;
     }
 
-    // 설문 폼 구성
+    // 설문 폼 구성 (선택한 주제만)
     function renderSurveyForm() {
       surveyForm.querySelectorAll(".topic-section").forEach(el => el.remove());
 
       const fragment = document.createDocumentFragment();
       const selectedTopics = topics.filter(t => selectedTopicIds.has(t.id));
 
-      selectedTopics.forEach(topic => {
+      selectedTopics.forEach((topic) => {
         const section = document.createElement("section");
         section.className =
           "topic-section rounded-2xl border border-sky-100 bg-white/90 p-4 md:p-5 shadow-md";
@@ -470,18 +501,45 @@
         fragment.appendChild(section);
       });
 
-      // 선택 안 한 주제 미응답 처리용 hidden input
-      const unselectedTopics = topics.filter(t => !selectedTopicIds.has(t.id));
-      unselectedTopics.forEach(topic => {
-        const hidden = document.createElement("input");
-        hidden.type = "hidden";
-        hidden.name = `answers[${topic.id}][_status]`;
-        hidden.value = "미응답(주제 미선택)";
-        fragment.appendChild(hidden);
-      });
-
       const submitBtnWrapper = surveyForm.lastElementChild;
       surveyForm.insertBefore(fragment, submitBtnWrapper);
+    }
+
+    // Q1~Q50 값 수집 (질문 번호 기준)
+    function collectAnswersByQuestion() {
+      const result = {}; // { Q1: "...", Q2: "...", ... }
+
+      topics.forEach(topic => {
+        topic.questions.forEach(q => {
+          const key = "Q" + q.number;
+
+          if (q.type === "single") {
+            const input = surveyForm.querySelector(
+              `input[name="answers[${q.number}][choice]"]:checked`
+            );
+            result[key] = input ? input.value : "";
+          } else if (q.type === "multi") {
+            const checks = surveyForm.querySelectorAll(
+              `input[name="answers[${q.number}][choices][]"]:checked`
+            );
+            const values = Array.from(checks).map(c => c.value);
+            const otherInput = surveyForm.querySelector(
+              `input[name="answers[${q.number}][other]"]`
+            );
+            if (otherInput && otherInput.value.trim()) {
+              values.push("기타: " + otherInput.value.trim());
+            }
+            result[key] = values.join(", ");
+          } else if (q.type === "text") {
+            const ta = surveyForm.querySelector(
+              `textarea[name="answers[${q.number}][text]"]`
+            );
+            result[key] = ta ? ta.value.trim() : "";
+          }
+        });
+      });
+
+      return result;
     }
 
     // 화면 전환
@@ -519,45 +577,37 @@
         "w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70";
     }
 
-    // ====== 7. 폼 제출 → Google Apps Script로 전송 ======
+    // 제출 → Google Apps Script로 전송 (ID, IP, Q1~Q50)
     surveyForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const formData = new FormData(surveyForm);
+      const answers = collectAnswersByQuestion();
+
       const payload = {
-        submittedAt: new Date().toISOString(),
-        selectedTopics: Array.from(selectedTopicIds),
+        ID: (employeeIdInput.value || "").trim(),
+        IP: clientIp || "",
       };
 
-      // FormData -> 평평한 객체로 변환
-      for (const [key, value] of formData.entries()) {
-        if (payload[key]) {
-          if (!Array.isArray(payload[key])) {
-            payload[key] = [payload[key]];
-          }
-          payload[key].push(value);
-        } else {
-          payload[key] = value;
-        }
+      for (let i = 1; i <= 50; i++) {
+        const key = "Q" + i;
+        payload[key] = answers[key] || "";
       }
 
       console.log("전송 데이터:", payload);
 
       try {
-        const res = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
           method: "POST",
-          mode: "no-cors", // CORS 이슈 피하기 위해 no-cors 사용 (응답은 읽지 못함)
+          mode: "no-cors",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
         });
 
-        // no-cors 모드에서는 상태 확인이 불가하므로, 일단 성공 가정
         alert("설문이 제출되었습니다. 감사합니다!");
         surveyForm.reset();
-        // 다시 주제 선택 화면으로 보내고 싶으면 아래 주석 해제
-        // backToTopicStep();
+        backToTopicStep();
       } catch (error) {
         console.error("전송 오류:", error);
         alert("제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
@@ -566,6 +616,7 @@
 
     // 초기 실행
     document.addEventListener("DOMContentLoaded", () => {
+      fetchClientIp();
       renderTopicCards();
       btnGoToSurvey.addEventListener("click", goToSurveyStep);
       btnBack.addEventListener("click", backToTopicStep);
