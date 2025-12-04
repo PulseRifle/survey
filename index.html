@@ -205,7 +205,7 @@
       etc: "📝"
     };
 
-    // 설문 데이터 (이전과 동일)
+    // 설문 데이터
     const topics = [
       {
         id: "interior",
@@ -405,7 +405,15 @@
           console.warn("이전 응답 조회 실패:", res.status);
           return;
         }
-        const data = await res.json();
+        const text = await res.text();
+        let data = null;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          console.warn("이전 응답 JSON 파싱 실패:", text);
+          return;
+        }
+
         if (data && data.exists) {
           previousId = data.ID;
           previousStatus = data.STATUS || null;
@@ -751,7 +759,16 @@
           body: JSON.stringify(payload),
         });
 
-        const data = await res.json();
+        const text = await res.text();
+        let data = null;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          console.warn("서버 응답이 JSON이 아닙니다:", text);
+          alert("서버 응답 형식이 올바르지 않습니다. (웹앱 배포/권한 설정을 확인해 주세요)");
+          return;
+        }
+
         if (data && data.status === "ok") {
           if (data.ID) {
             previousId = data.ID;
