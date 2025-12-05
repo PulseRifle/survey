@@ -1,3 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2025년 업무지원 설문조사</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-indigo-50 text-slate-900">
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <!-- 헤더 -->
+    <header class="mb-4">
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-indigo-600 to-emerald-600">
+        2025년 업무지원 설문조사
+      </h1>
+      <p class="text-base md:text-lg text-slate-600">
+        관심 있는 주제를 선택한 뒤, 선택한 주제에 대해서만 설문을 진행합니다.
+        선택하지 않은 주제는 시스템에서 모두 <span class="font-semibold text-sky-700">미응답</span>으로 처리됩니다.
+      </p>
+    </header>
+
+    <!-- 기존 응답 ID 안내 배너 -->
+    <div
+      id="current-id-banner"
+      class="hidden mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-sm md:text-base text-emerald-900 flex items-center gap-2"
+    >
+      <span class="text-lg">✅</span>
+      <div>
+        <span class="font-semibold">이전에 응답한 기록이 있습니다.</span>
+        <span class="ml-2">응답 ID: <span id="current-id-text" class="font-bold"></span></span>
+      </div>
+    </div>
+
+    <!-- 설문 플로우 영역 (단계 + 설문 화면) -->
+    <div id="survey-flow">
+      <!-- 단계 인디케이터 -->
+      <div class="flex items-center gap-3 text-sm md:text-base mb-6">
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-1" class="w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm">
+            1
+          </div>
+          <span class="font-semibold text-slate-800">주제 선택</span>
+        </div>
+        <div class="h-px flex-1 bg-gradient-to-r from-sky-200 via-slate-200 to-indigo-200"></div>
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-2" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70">
+            2
+          </div>
+          <span class="font-semibold text-slate-400">설문 응답</span>
+        </div>
+      </div>
+
+      <!-- 1단계: 주제 선택 -->
+      <section id="step-topics" class="space-y-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold mb-1 text-slate-900">관심 있는 주제를 선택해 주세요</h2>
+            <p class="text-sm md:text-base text-slate-600">
+              중복 선택이 가능합니다. 선택한 주제에 해당하는 항목만 설문에 표시됩니다.
+            </p>
+          </div>
+          <button
+            id="btn-select-all-topics"
+            type="button"
+            class="inline-flex items-center rounded-xl border border-sky-500 bg-white/80 px-3 py-1.5 text-xs md:text-sm font-semibold text-sky-700 hover:bg-sky-50 shadow-sm"
+          >
+            모두 선택
+          </button>
+        </div>
+
+        <!-- 주제 목록 -->
+        <div id="topic-list" class="grid gap-4 md:grid-cols-2">
+          <!-- JS에서 동적으로 생성 -->
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
+          <button
+            id="btn-go-to-survey"
+            class="inline-flex items-center justify-center rounded-2xl border border-sky-600 bg-gradient-to-r from-sky-500 to-indigo-500 px-5 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-sky-600 hover:to-indigo-600 active:scale-[0.99] transition-transform"
+          >
+            다음 단계로
+          </button>
+        </div>
+      </section>
+
+      <!-- 2단계: 설문 -->
+      <section id="step-survey" class="space-y-6 hidden">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold mb-1 text-slate-900">선택한 주제에 대한 설문</h2>
+            <p class="text-sm md:text-base text-slate-600">
+              선택하지 않은 주제의 응답은 시스템에서 <span class="font-semibold text-sky-700">미응답 처리</span>됩니다.
+            </p>
+          </div>
+          <button
+            id="btn-back"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm md:text-base font-medium text-slate-700 hover:bg-slate-100 shadow-sm"
+          >
+            &larr; 주제 다시 선택
+          </button>
+        </div>
+
+        <form id="survey-form" class="space-y-6">
+          <!-- JS에서 설문 문항 섹션 동적으로 생성 -->
+
+          <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
+            <button
+              id="btn-temp-save"
+              type="button"
+              class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white/90 px-5 py-3 text-sm md:text-base font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+            >
+              임시 저장
+            </button>
+            <button
+              id="btn-final-submit"
+              type="button"
+              class="inline-flex items-center justify-center rounded-2xl border border-emerald-600 bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] transition-transform"
+            >
+              설문 제출
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- 제출 완료 화면 -->
+    <section
+      id="completion-screen"
+      class="hidden mt-10 flex flex-col items-center justify-center text-center"
+    >
+      <div class="max-w-xl w-full rounded-3xl border border-emerald-200 bg-emerald-50/90 px-6 py-10 shadow-md">
+        <div class="text-4xl mb-3">🎉</div>
+        <h2 class="text-2xl md:text-3xl font-bold text-emerald-800 mb-3">
+          설문 제출을 완료하였습니다
+        </h2>
+        <p class="text-sm md:text-base text-emerald-900 mb-2">
+          소중한 의견 감사합니다. 내용은 향후 업무지원 서비스 개선에 적극 반영하겠습니다.
+        </p>
+        <p class="text-xs md:text-sm text-emerald-900/80">
+          응답 ID: <span id="completion-id-text" class="font-semibold"></span>
+        </p>
+      </div>
+    </section>
+  </div>
+
   <script>
     // ==== 본인 Google Apps Script 웹앱 URL로 교체 ====
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsZeMZE6-1Mgtpzuk2O9ORnO0Y-1k_BZg4xDydOoATeCevJimOjFdxG9kh4BSRVA2y/exec";
@@ -317,7 +464,7 @@
                 <h3 class="text-base md:text-lg font-semibold text-slate-900">
                   ${topicEmojis[topic.id] || "📌"} ${topic.title}
                 </h3>
-                <span class="text-[11px] md:text-xs px-2 py-0.5 rounded-full border border-slate-200 text-slate-400 bg-slate-50 group-has-[:checked]:bg-sky-100 group-has-[:checked]:text-sky-800 group-has-[:checked]:border-sky-300">
+                <span class="text-[11px] md:text-xs px-2 py-0.5 rounded-full border border-slate-200 text-slate-400 bg-slate-50">
                   주제 선택
                 </span>
               </div>
@@ -604,7 +751,7 @@
       console.log("전송 데이터:", payload);
 
       try {
-        // application/x-www-form-urlencoded 로 전송 (CORS preflight 회피)
+        // application/x-www-form-urlencoded 로 전송
         const params = new URLSearchParams();
         params.append("data", JSON.stringify(payload));
 
@@ -661,3 +808,5 @@
       }
     });
   </script>
+</body>
+</html>
