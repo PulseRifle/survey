@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <title>2025년 업무지원 설문조사</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-indigo-50 text-slate-900">
   <div class="max-w-5xl mx-auto px-4 py-8">
     <!-- 헤더 -->
@@ -20,11 +20,9 @@
       </p>
     </header>
 
-    <!-- 기존 응답 ID 안내 배너 -->
-    <div
-      id="current-id-banner"
-      class="hidden mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-sm md:text-base text-emerald-900 flex items-center gap-2"
-    >
+    <!-- 기존 응답 ID 안내 -->
+    <div id="current-id-banner"
+      class="hidden mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-sm md:text-base text-emerald-900 flex items-center gap-2">
       <span class="text-lg">✅</span>
       <div>
         <span class="font-semibold">이전에 응답한 기록이 있습니다.</span>
@@ -32,21 +30,19 @@
       </div>
     </div>
 
-    <!-- 설문 플로우 영역 (단계 + 설문 화면) -->
+    <!-- 설문 플로우 -->
     <div id="survey-flow">
-      <!-- 단계 인디케이터 -->
+      <!-- 단계 -->
       <div class="flex items-center gap-3 text-sm md:text-base mb-6">
         <div class="flex items-center gap-2">
-          <div id="step-indicator-1" class="w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm">
-            1
-          </div>
+          <div id="step-indicator-1"
+            class="w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm">1</div>
           <span class="font-semibold text-slate-800">주제 선택</span>
         </div>
         <div class="h-px flex-1 bg-gradient-to-r from-sky-200 via-slate-200 to-indigo-200"></div>
         <div class="flex items-center gap-2">
-          <div id="step-indicator-2" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70">
-            2
-          </div>
+          <div id="step-indicator-2"
+            class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70">2</div>
           <span class="font-semibold text-slate-400">설문 응답</span>
         </div>
       </div>
@@ -60,25 +56,17 @@
               중복 선택이 가능합니다. 선택한 주제에 해당하는 항목만 설문에 표시됩니다.
             </p>
           </div>
-          <button
-            id="btn-select-all-topics"
-            type="button"
-            class="inline-flex items-center rounded-xl border border-sky-500 bg-white/80 px-3 py-1.5 text-xs md:text-sm font-semibold text-sky-700 hover:bg-sky-50 shadow-sm"
-          >
+          <button id="btn-select-all-topics" type="button"
+            class="inline-flex items-center rounded-xl border border-sky-500 bg-white/80 px-3 py-1.5 text-xs md:text-sm font-semibold text-sky-700 hover:bg-sky-50 shadow-sm">
             모두 선택
           </button>
         </div>
 
-        <!-- 주제 목록 -->
-        <div id="topic-list" class="grid gap-4 md:grid-cols-2">
-          <!-- JS에서 동적으로 생성 -->
-        </div>
+        <div id="topic-list" class="grid gap-4 md:grid-cols-2"></div>
 
         <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
-          <button
-            id="btn-go-to-survey"
-            class="inline-flex items-center justify-center rounded-2xl border border-sky-600 bg-gradient-to-r from-sky-500 to-indigo-500 px-5 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-sky-600 hover:to-indigo-600 active:scale-[0.99] transition-transform"
-          >
+          <button id="btn-go-to-survey"
+            class="inline-flex items-center justify-center rounded-2xl border border-sky-600 bg-gradient-to-r from-sky-500 to-indigo-500 px-5 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-sky-600 hover:to-indigo-600 active:scale-[0.99] transition-transform">
             다음 단계로
           </button>
         </div>
@@ -93,31 +81,22 @@
               선택하지 않은 주제의 응답은 시스템에서 <span class="font-semibold text-sky-700">미응답 처리</span>됩니다.
             </p>
           </div>
-          <button
-            id="btn-back"
-            type="button"
-            class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm md:text-base font-medium text-slate-700 hover:bg-slate-100 shadow-sm"
-          >
+          <button id="btn-back" type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm md:text-base font-medium text-slate-700 hover:bg-slate-100 shadow-sm">
             &larr; 주제 다시 선택
           </button>
         </div>
 
         <form id="survey-form" class="space-y-6">
-          <!-- JS에서 설문 문항 섹션 동적으로 생성 -->
+          <!-- 동적 생성 섹션 -->
 
           <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 mt-4">
-            <button
-              id="btn-temp-save"
-              type="button"
-              class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white/90 px-5 py-3 text-sm md:text-base font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
-            >
+            <button id="btn-temp-save" type="button"
+              class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white/90 px-5 py-3 text-sm md:text-base font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
               임시 저장
             </button>
-            <button
-              id="btn-final-submit"
-              type="button"
-              class="inline-flex items-center justify-center rounded-2xl border border-emerald-600 bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] transition-transform"
-            >
+            <button id="btn-final-submit" type="button"
+              class="inline-flex items-center justify-center rounded-2xl border border-emerald-600 bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] transition-transform">
               설문 제출
             </button>
           </div>
@@ -126,10 +105,7 @@
     </div>
 
     <!-- 제출 완료 화면 -->
-    <section
-      id="completion-screen"
-      class="hidden mt-10 flex flex-col items-center justify-center text-center"
-    >
+    <section id="completion-screen" class="hidden mt-10 flex flex-col items-center justify-center text-center">
       <div class="max-w-xl w-full rounded-3xl border border-emerald-200 bg-emerald-50/90 px-6 py-10 shadow-md">
         <div class="text-4xl mb-3">🎉</div>
         <h2 class="text-2xl md:text-3xl font-bold text-emerald-800 mb-3">
@@ -146,18 +122,14 @@
   </div>
 
   <script>
-    // ==== 본인 Google Apps Script 웹앱 URL로 교체 ====
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsZeMZE6-1Mgtpzuk2O9ORnO0Y-1k_BZg4xDydOoATeCevJimOjFdxG9kh4BSRVA2y/exec";
-    // =================================================
+    // ✅ 본인 Google Apps Script 웹앱 URL로 교체
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPBS1Wdy0bemgVbP9LRP4Jk6ljOWPaLH1EmjQzexKcOsf1KXyg59TLMYAYUkSOpEJ3/exec";
 
-    // 상태 저장용
     let clientIp = "";
     let previousId = null;
-    let previousAnswers = null; // { Q1: "...", ... }
-    let previousStatus = null;  // "TEMP" | "FINAL" | null
+    let previousAnswers = null;
     let isFinalSubmitted = false;
 
-    // DOM 요소
     const topicListEl = document.getElementById("topic-list");
     const stepTopicsEl = document.getElementById("step-topics");
     const stepSurveyEl = document.getElementById("step-survey");
@@ -175,19 +147,10 @@
     const btnTempSave = document.getElementById("btn-temp-save");
     const btnFinalSubmit = document.getElementById("btn-final-submit");
 
-    // 선택된 주제
     let selectedTopicIds = new Set();
 
-    // 만족도 공통 옵션
-    const satisfactionOptions = [
-      "매우 만족",
-      "대체로 만족",
-      "보통",
-      "대체로 불만",
-      "매우 불만"
-    ];
+    const satisfactionOptions = ["매우 만족", "대체로 만족", "보통", "대체로 불만", "매우 불만"];
 
-    // 제목 이모지
     const topicEmojis = {
       interior: "🛋️",
       office_furniture: "🪑",
@@ -205,14 +168,13 @@
       etc: "📝"
     };
 
-    // 설문 데이터
+    // ✅ 설문 데이터 (Q1~Q50)
     const topics = [
       {
         id: "interior",
         title: "인테리어",
         summary: "시그니쳐타워 인테리어·라운지·사무공간 만족도 조사",
-        description:
-          "ㅇ 인테리어 업체 선정(2024.9월), 인테리어 설계 후 2025.1.1부터 25.4.30일까지 인테리어 공사 실시",
+        description: "ㅇ 인테리어 업체 선정(2024.9월), 인테리어 설계 후 2025.1.1부터 25.4.30일까지 인테리어 공사 실시",
         questions: [
           { number: 1, text: "시그니쳐타워 인테리어 전반에 대한 만족도는 어떻습니까? (단답형)", type: "single", options: satisfactionOptions },
           { number: 2, text: "라운지 공간에 대한 만족도는 어떻습니까? (단답형)", type: "single", options: satisfactionOptions },
@@ -224,8 +186,7 @@
         id: "office_furniture",
         title: "사무가구",
         summary: "6층 목업가구 및 사무가구 선정 과정 만족도 조사",
-        description:
-          "ㅇ 코리안리빌딩 6층에 목업가구 배치 및 직원 의견 수렴, 선정된 19명 직원 대상으로 설명회 개최 및 업체 선정(2025.1.10)",
+        description: "ㅇ 코리안리빌딩 6층에 목업가구 배치 및 직원 의견 수렴, 선정된 19명 직원 대상으로 설명회 개최 및 업체 선정(2025.1.10)",
         questions: [
           { number: 5, text: "사무가구 및 목업가구 품평회 관련 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 6, text: "선정된 사무가구 제품에 대한 평가는? (단답형)", type: "single", options: satisfactionOptions },
@@ -237,8 +198,7 @@
         id: "anniversary",
         title: "창립기념 행사",
         summary: "창립기념식 행사·출장뷔페·머그컵 기념품 만족도",
-        description:
-          "ㅇ 2025.3.19일 창립기념일을 맞이하여 출장뷔페 행사를 진행(12층과 6층), 기념품으로 사옥 이미지가 머그컵 배포",
+        description: "ㅇ 2025.3.19일 창립기념일을 맞이하여 출장뷔페 행사를 진행(12층과 6층), 기념품으로 사옥 이미지가 머그컵 배포",
         questions: [
           { number: 9, text: "창립기념식 행사 및 머그컵 기념품에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 10, text: "창립기념식 행사에 대한 만족도는? (단답형)", type: "single", options: satisfactionOptions },
@@ -250,8 +210,7 @@
         id: "moving",
         title: "이사",
         summary: "사옥 이사 절차 및 안내에 대한 만족도",
-        description:
-          "ㅇ 이사관련 안내 공지(2025.4.7일), 4.11일~4.13일 본 이사 실시, 4.26일에 후속 이사를 진행 (4월4일 이사설명회는 재택근무로 취소)",
+        description: "ㅇ 이사관련 안내 공지(2025.4.7일), 4.11일~4.13일 본 이사 실시, 4.26일에 후속 이사를 진행 (4월4일 이사설명회는 재택근무로 취소)",
         questions: [
           { number: 13, text: "사옥 이사 과정에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 14, text: "사옥 이사 과정에서 맡았던 역할은? (단답형, 복수선택)", type: "multi", options: ["출발담당자", "도착담당자", "총무서무", "역할없음", "기타"], hasOther: true },
@@ -262,8 +221,7 @@
         id: "access_card",
         title: "출입증",
         summary: "출입증 카드와 신청·재발급 프로세스 만족도",
-        description:
-          "ㅇ 시그니쳐타워 보안관리 시스템 설치 및 출입증 배포 (2025.4.8일부터)\nㅇ 사원증/방문증 신청 시 인사총무팀에 협조전을 발송, 분실에 대한 경각심 제고 및 기록관리를 위해 분실 시 사유서를 첨부.",
+        description: "ㅇ 시그니쳐타워 보안관리 시스템 설치 및 출입증 배포 (2025.4.8일부터)\nㅇ 사원증/방문증 신청 시 인사총무팀에 협조전을 발송, 분실에 대한 경각심 제고 및 기록관리를 위해 분실 시 사유서를 첨부.",
         questions: [
           { number: 16, text: "출입증 카드 제품, 업무프로세스에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 17, text: "출입증 카드 제품에 대한 만족도는? (단답형)", type: "single", options: satisfactionOptions },
@@ -275,8 +233,7 @@
         id: "affiliation_discount",
         title: "제휴할인",
         summary: "건물 내 제휴할인 및 LG전자 복지몰 만족도",
-        description:
-          "ㅇ 입주시기에 맞추어 시그니쳐 타워 내 상가 제휴할인 약정\nㅇ 코리안리 LG전자 복지몰 오픈(2025.11.20일부터)",
+        description: "ㅇ 입주시기에 맞추어 시그니쳐 타워 내 상가 제휴할인 약정\nㅇ 코리안리 LG전자 복지몰 오픈(2025.11.20일부터)",
         questions: [
           { number: 20, text: "제휴할인 전반에 대한 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 21, text: "건물 내 제휴 할인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
@@ -289,8 +246,7 @@
         id: "volunteering",
         title: "봉사활동",
         summary: "해비타트·우리동네희망나눔 등 봉사활동 만족도",
-        description:
-          "ㅇ 상반기: 해비타트(3기수), 우리동네희망나눔(4기수), 하천정화(4기수), 해양쓰레기(3기수) 운영\nㅇ 하반기: 우리동네희망나눔(3기수), 하천정화(2기수), 해양쓰레기(2기수), 장항습지(1기수) 운영",
+        description: "ㅇ 상반기: 해비타트(3기수), 우리동네희망나눔(4기수), 하천정화(4기수), 해양쓰레기(3기수) 운영\nㅇ 하반기: 우리동네희망나눔(3기수), 하천정화(2기수), 해양쓰레기(2기수), 장항습지(1기수) 운영",
         questions: [
           { number: 25, text: "참석하신 봉사활동을 선택해 주세요. (단답형)", type: "single", options: ["해양쓰레기", "우리동네희망나눔", "해비타트", "장항습지", "하천정화"] },
           { number: 26, text: "봉사활동에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
@@ -302,8 +258,7 @@
         id: "parking",
         title: "주차",
         summary: "시그니쳐타워 주차 시범·본 운영 만족도",
-        description:
-          "ㅇ 2025.4.14~6.30 동안 추첨을 통한 무료 시범운영 실시\nㅇ 2025.7.1일부터 추첨으로 6개월 단위 주차장 이용(월 요금 130,220원)\nㅇ 전월 24일까지 취소, 차순위 대기자에게 선택권 부여",
+        description: "ㅇ 2025.4.14~6.30 동안 추첨을 통한 무료 시범운영 실시\nㅇ 2025.7.1일부터 추첨으로 6개월 단위 주차장 이용(월 요금 130,220원)\nㅇ 전월 24일까지 취소, 차순위 대기자에게 선택권 부여",
         questions: [
           { number: 29, text: "시그니쳐타워 주차에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 30, text: "시범운영기간에 대한 만족도는? (단답형)", type: "single", options: satisfactionOptions },
@@ -315,8 +270,7 @@
         id: "scent_system",
         title: "방향시스템",
         summary: "라운지 방향(향기)시스템 설치 효과 및 만족도",
-        description:
-          "ㅇ 인테리어 및 꿉꿉한 카페트 냄새 제거 목적으로 각 라운지에 방향(향기)시스템 설치(2025.8.1일부터)",
+        description: "ㅇ 인테리어 및 꿉꿉한 카페트 냄새 제거 목적으로 각 라운지에 방향(향기)시스템 설치(2025.8.1일부터)",
         questions: [
           { number: 33, text: "방향시스템에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 34, text: "만족했던 이유와 불만족한 이유, 개선되었으면 하는 부분은? (주관식)", type: "text" }
@@ -326,8 +280,7 @@
         id: "snack24",
         title: "스낵24",
         summary: "스낵24 서비스·상품구성·포인트 수준 만족도",
-        description:
-          "ㅇ 기존 부비통장으로 지급되던 부비의 일부를 스낵24 포인트로 전환하여 지급\nㅇ 스낵24 통하여 라운지별 스낵바를 설치하고 운영",
+        description: "ㅇ 기존 부비통장으로 지급되던 부비의 일부를 스낵24 포인트로 전환하여 지급\nㅇ 스낵24 통하여 라운지별 스낵바를 설치하고 운영",
         questions: [
           { number: 35, text: "스낵24 서비스 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 36, text: "상품구성에 대한 만족도는? (단답형)", type: "single", options: satisfactionOptions },
@@ -340,8 +293,7 @@
         id: "chobok_bingsu",
         title: "초복 컵빙수",
         summary: "초복 컵빙수(팥빙수/망고빙수) 행사 만족도",
-        description:
-          "ㅇ 초복 수박도시락을 초복 컵빙수(팥빙수/망고빙수) 행사로 전환",
+        description: "ㅇ 초복 수박도시락을 초복 컵빙수(팥빙수/망고빙수) 행사로 전환",
         questions: [
           { number: 40, text: "초복 컵빙수에 대한 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 41, text: "만족했던 이유와 불만족한 이유, 개선되었으면 하는 부분은? (주관식)", type: "text" }
@@ -351,8 +303,7 @@
         id: "credit_rating_event",
         title: "신용등급 상향행사",
         summary: "S&P 신용등급 상향 관련 라운지 행사 만족도",
-        description:
-          "ㅇ 당사 S&P 신용등급 상향에 따른 4F 라운지 행사\nㅇ 출장뷔페 통한 디저트 및 음료 제공",
+        description: "ㅇ 당사 S&P 신용등급 상향에 따른 4F 라운지 행사\nㅇ 출장뷔페 통한 디저트 및 음료 제공",
         questions: [
           { number: 42, text: "신용등급 상향평가 관련 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 43, text: "만족했던 이유와 불만족한 이유, 개선되었으면 하는 부분은? (주관식)", type: "text" }
@@ -362,8 +313,7 @@
         id: "christmas_tree",
         title: "크리스마스 트리",
         summary: "라운지·복도 크리스마스 트리 설치 만족도",
-        description:
-          "ㅇ 라운지 및 복도에 크리스마스 트리 설치(2025.12.3일부터)",
+        description: "ㅇ 라운지 및 복도에 크리스마스 트리 설치(2025.12.3일부터)",
         questions: [
           { number: 44, text: "크리스마스 트리 설치 관련 전반적인 만족도는? (단답형)", type: "single", options: satisfactionOptions },
           { number: 45, text: "만족했던 이유와 불만족한 이유, 개선되었으면 하는 부분은? (주관식)", type: "text" }
@@ -384,81 +334,36 @@
       }
     ];
 
-    // IP 가져오기
     async function fetchClientIp() {
       try {
         const res = await fetch("https://api.ipify.org?format=json");
         const data = await res.json();
         clientIp = data.ip;
-        console.log("Client IP:", clientIp);
       } catch (e) {
-        console.error("IP 조회 실패:", e);
+        console.warn("IP 조회 실패(저장 시 IP가 비어있을 수 있음):", e);
+        clientIp = "";
       }
     }
 
-    // 기존 응답 조회
-    async function loadPreviousResponse() {
-      if (!clientIp) return;
-      try {
-        const res = await fetch(`${SCRIPT_URL}?ip=${encodeURIComponent(clientIp)}`);
-        if (!res.ok) {
-          console.warn("이전 응답 조회 실패:", res.status);
-          return;
-        }
-        const text = await res.text();
-        let data = null;
-        try {
-          data = JSON.parse(text);
-        } catch (e) {
-          console.warn("이전 응답 JSON 파싱 실패:", text);
-          return;
-        }
-
-        if (data && data.exists) {
-          previousId = data.ID;
-          previousStatus = data.STATUS || null;
-
-          if (previousStatus === "FINAL") {
-            isFinalSubmitted = true;
-            if (previousId) {
-              completionIdText.textContent = previousId;
-            }
-            showCompletionScreen();
-            return;
-          }
-
-          previousAnswers = {};
-          for (let i = 1; i <= 50; i++) {
-            const key = "Q" + i;
-            previousAnswers[key] = data[key] || "";
-          }
-
-          currentIdText.textContent = previousId;
-          currentIdBanner.classList.remove("hidden");
-        }
-      } catch (e) {
-        console.error("loadPreviousResponse 에러:", e);
-      }
+    // ✅ (선택) doGet이 없으면 이 함수는 실패해도 화면은 정상
+    async function loadPreviousResponseOptional() {
+      // 현재 code.gs는 doPost만 제공하는 버전이라서, 이 조회는 "옵션" 처리
+      // 필요하면 code.gs에 doGet을 추가해서 활성화할 수 있음
+      return;
     }
 
-    // 주제 카드 렌더링
     function renderTopicCards() {
       topicListEl.innerHTML = "";
-
-      topics.forEach((topic) => {
+      topics.forEach(topic => {
         const card = document.createElement("label");
         card.className =
           "group relative flex cursor-pointer flex-col rounded-2xl border border-sky-100 bg-white/80 p-4 shadow-sm hover:shadow-lg hover:border-sky-300 hover:bg-sky-50/70 transition-all";
 
-        const summaryText = topic.summary || topic.description.split("\n")[0];
-
         card.innerHTML = `
           <div class="flex items-start gap-3">
-            <input
-              type="checkbox"
+            <input type="checkbox"
               class="mt-1 h-5 w-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
-              value="${topic.id}"
-            />
+              value="${topic.id}" />
             <div class="flex-1">
               <div class="flex items-center justify-between gap-2">
                 <h3 class="text-base md:text-lg font-semibold text-slate-900">
@@ -468,75 +373,60 @@
                   주제 선택
                 </span>
               </div>
-              <p class="mt-1 text-xs md:text-sm text-slate-600 line-clamp-2">
-                ${summaryText}
+              <p class="mt-1 text-xs md:text-sm text-slate-600">
+                ${topic.summary}
               </p>
             </div>
           </div>
         `;
-
         topicListEl.appendChild(card);
       });
     }
 
-    // 질문 HTML 생성
-    function createQuestionHtml(topic, q) {
+    function createQuestionHtml(q) {
       let inputHtml = "";
 
       if (q.type === "single") {
-        const opts = q.options && q.options.length ? q.options : satisfactionOptions;
         inputHtml = `
           <div class="flex flex-wrap items-center gap-3">
-            ${opts.map(
-              opt => `
+            ${q.options.map(opt => `
               <label class="inline-flex items-center gap-1.5 text-sm md:text-base text-slate-700">
-                <input
-                  type="radio"
+                <input type="radio"
                   name="answers[${q.number}][choice]"
                   value="${opt}"
-                  class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500"
-                />
+                  class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
                 <span>${opt}</span>
               </label>
-            `
-            ).join("")}
+            `).join("")}
           </div>
         `;
       } else if (q.type === "multi") {
         inputHtml = `
           <div class="flex flex-wrap items-center gap-3">
-            ${q.options.map(
-              opt => `
+            ${q.options.map(opt => `
               <label class="inline-flex items-center gap-1.5 text-sm md:text-base text-slate-700">
-                <input
-                  type="checkbox"
+                <input type="checkbox"
                   name="answers[${q.number}][choices][]"
                   value="${opt}"
-                  class="h-4 w-4 text-indigo-600 border-slate-300 focus:ring-indigo-500"
-                />
+                  class="h-4 w-4 text-indigo-600 border-slate-300 focus:ring-indigo-500" />
                 <span>${opt}</span>
               </label>
-            `
-            ).join("")}
+            `).join("")}
           </div>
           ${q.hasOther ? `
-          <div class="mt-3">
-            <input
-              type="text"
-              name="answers[${q.number}][other]"
-              class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm md:text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/70 focus:border-indigo-500"
-              placeholder="기타를 선택하신 경우, 구체적으로 작성해 주세요."
-            />
-          </div>` : ""}
+            <div class="mt-3">
+              <input type="text"
+                name="answers[${q.number}][other]"
+                class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm md:text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/70 focus:border-indigo-500"
+                placeholder="기타를 선택하신 경우, 구체적으로 작성해 주세요." />
+            </div>
+          ` : ""}
         `;
-      } else if (q.type === "text") {
+      } else {
         inputHtml = `
-          <textarea
-            name="answers[${q.number}][text]"
-            rows="3"
+          <textarea name="answers[${q.number}][text]" rows="3"
             class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm md:text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500"
-            placeholder="자유롭게 의견을 작성해 주세요."
-          ></textarea>
+            placeholder="자유롭게 의견을 작성해 주세요."></textarea>
         `;
       }
 
@@ -550,153 +440,72 @@
               ${q.text}
             </p>
           </div>
-          <div class="mt-2">
-            ${inputHtml}
-          </div>
+          <div class="mt-2">${inputHtml}</div>
         </div>
       `;
     }
 
-    // 설문 폼 구성 (선택한 주제만)
     function renderSurveyForm() {
       surveyForm.querySelectorAll(".topic-section").forEach(el => el.remove());
 
       const fragment = document.createDocumentFragment();
       const selectedTopics = topics.filter(t => selectedTopicIds.has(t.id));
 
-      selectedTopics.forEach((topic) => {
+      selectedTopics.forEach(topic => {
         const section = document.createElement("section");
-        section.className =
-          "topic-section rounded-2xl border border-sky-100 bg-white/90 p-4 md:p-5 shadow-md";
-
-        const descHtml = topic.description.replace(/\n/g, "<br />");
-        const questionsHtml = topic.questions.map(q => createQuestionHtml(topic, q)).join("");
+        section.className = "topic-section rounded-2xl border border-sky-100 bg-white/90 p-4 md:p-5 shadow-md";
 
         section.innerHTML = `
-          <div class="flex items-start justify-between gap-3 mb-4">
-            <div>
-              <h3 class="text-lg md:text-xl font-bold text-slate-900">
-                ${topicEmojis[topic.id] || "📌"} ${topic.title}
-              </h3>
-              <p class="mt-1 text-sm md:text-base text-slate-600">
-                ${descHtml}
-              </p>
-            </div>
+          <div class="mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-slate-900">
+              ${topicEmojis[topic.id] || "📌"} ${topic.title}
+            </h3>
+            <p class="mt-1 text-sm md:text-base text-slate-600">
+              ${topic.description.replace(/\n/g, "<br />")}
+            </p>
           </div>
           <div class="space-y-5">
-            ${questionsHtml}
+            ${topic.questions.map(q => createQuestionHtml(q)).join("")}
           </div>
         `;
-
         fragment.appendChild(section);
       });
 
       const submitBtnWrapper = surveyForm.lastElementChild;
       surveyForm.insertBefore(fragment, submitBtnWrapper);
-
-      // 이전 응답 있으면 값 채우기
-      applyPreviousAnswers();
     }
 
-    // 이전 응답을 폼에 반영
-    function applyPreviousAnswers() {
-      if (!previousAnswers) return;
-
-      topics.forEach(topic => {
-        if (!selectedTopicIds.has(topic.id)) return;
-
-        topic.questions.forEach(q => {
-          const key = "Q" + q.number;
-          const val = previousAnswers[key];
-          if (!val) return;
-
-          if (q.type === "single") {
-            const radios = surveyForm.querySelectorAll(
-              `input[name="answers[${q.number}][choice]"]`
-            );
-            radios.forEach(r => {
-              if (r.value === val) r.checked = true;
-            });
-          } else if (q.type === "multi") {
-            const parts = val.split(",").map(s => s.trim()).filter(Boolean);
-            const checks = surveyForm.querySelectorAll(
-              `input[name="answers[${q.number}][choices][]"]`
-            );
-            checks.forEach(chk => {
-              if (parts.includes(chk.value)) chk.checked = true;
-            });
-            const otherPart = parts.find(p => p.startsWith("기타:"));
-            if (otherPart) {
-              const input = surveyForm.querySelector(
-                `input[name="answers[${q.number}][other]"]`
-              );
-              if (input) {
-                input.value = otherPart.replace(/^기타:\s*/, "");
-              }
-            }
-          } else if (q.type === "text") {
-            const ta = surveyForm.querySelector(
-              `textarea[name="answers[${q.number}][text]"]`
-            );
-            if (ta) ta.value = val;
-          }
-        });
-      });
-    }
-
-    // Q1~Q50 값 수집
     function collectAnswersByQuestion() {
       const result = {};
-
       topics.forEach(topic => {
         topic.questions.forEach(q => {
           const key = "Q" + q.number;
 
           if (q.type === "single") {
-            const input = surveyForm.querySelector(
-              `input[name="answers[${q.number}][choice]"]:checked`
-            );
+            const input = surveyForm.querySelector(`input[name="answers[${q.number}][choice]"]:checked`);
             result[key] = input ? input.value : "";
           } else if (q.type === "multi") {
-            const checks = surveyForm.querySelectorAll(
-              `input[name="answers[${q.number}][choices][]"]:checked`
-            );
+            const checks = surveyForm.querySelectorAll(`input[name="answers[${q.number}][choices][]"]:checked`);
             const values = Array.from(checks).map(c => c.value);
-            const otherInput = surveyForm.querySelector(
-              `input[name="answers[${q.number}][other]"]`
-            );
-            if (otherInput && otherInput.value.trim()) {
-              values.push("기타: " + otherInput.value.trim());
-            }
+            const other = surveyForm.querySelector(`input[name="answers[${q.number}][other]"]`);
+            if (other && other.value.trim()) values.push("기타: " + other.value.trim());
             result[key] = values.join(", ");
-          } else if (q.type === "text") {
-            const ta = surveyForm.querySelector(
-              `textarea[name="answers[${q.number}][text]"]`
-            );
+          } else {
+            const ta = surveyForm.querySelector(`textarea[name="answers[${q.number}][text]"]`);
             result[key] = ta ? ta.value.trim() : "";
           }
         });
       });
-
       return result;
     }
 
-    // 모두 선택 버튼
     function selectAllTopics() {
-      const checkboxes = topicListEl.querySelectorAll("input[type='checkbox']");
-      checkboxes.forEach(cb => {
-        cb.checked = true;
-      });
+      topicListEl.querySelectorAll("input[type='checkbox']").forEach(cb => cb.checked = true);
     }
 
-    // 단계 전환
     function goToSurveyStep() {
       const checkboxes = topicListEl.querySelectorAll("input[type='checkbox']");
-      selectedTopicIds = new Set(
-        Array.from(checkboxes)
-          .filter(cb => cb.checked)
-          .map(cb => cb.value)
-      );
+      selectedTopicIds = new Set(Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value));
 
       if (selectedTopicIds.size === 0) {
         alert("최소 1개 이상의 주제를 선택해 주세요.");
@@ -708,104 +517,83 @@
       stepTopicsEl.classList.add("hidden");
       stepSurveyEl.classList.remove("hidden");
 
-      stepIndicator1.className =
-        "w-8 h-8 rounded-full flex items-center justify-center text-slate-500 border border-slate-200 text-xs font-semibold bg-white/80";
-      stepIndicator2.className =
-        "w-8 h-8 rounded-full flex items-center justify-center text-white bg-indigo-600 text-xs font-semibold shadow-sm";
+      stepIndicator1.className = "w-8 h-8 rounded-full flex items-center justify-center text-slate-500 border border-slate-200 text-xs font-semibold bg-white/80";
+      stepIndicator2.className = "w-8 h-8 rounded-full flex items-center justify-center text-white bg-indigo-600 text-xs font-semibold shadow-sm";
     }
 
     function backToTopicStep() {
       stepSurveyEl.classList.add("hidden");
       stepTopicsEl.classList.remove("hidden");
 
-      stepIndicator1.className =
-        "w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm";
-      stepIndicator2.className =
-        "w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70";
+      stepIndicator1.className = "w-8 h-8 rounded-full flex items-center justify-center text-white bg-sky-600 text-xs font-semibold shadow-sm";
+      stepIndicator2.className = "w-8 h-8 rounded-full flex items-center justify-center text-slate-400 border border-slate-200 text-xs font-semibold bg-white/70";
     }
 
-    // 제출 완료 화면 보여주기
     function showCompletionScreen() {
       isFinalSubmitted = true;
       surveyFlowEl.classList.add("hidden");
       completionScreenEl.classList.remove("hidden");
-      if (previousId) {
-        completionIdText.textContent = previousId;
-      }
+      if (previousId) completionIdText.textContent = previousId;
     }
 
-    // 서버로 저장 (mode: "TEMP" | "FINAL")
+    // ✅ 저장(임시/최종) 공통
     async function saveSurvey(mode) {
       const answers = collectAnswersByQuestion();
 
-      const payload = {
-        IP: clientIp || "",
-        mode: mode
-      };
-
-      for (let i = 1; i <= 50; i++) {
-        const key = "Q" + i;
-        payload[key] = answers[key] || "";
-      }
-
-      console.log("전송 데이터:", payload);
+      // ✅ 반드시 Q1~Q50을 모두 포함(선택 안 한 주제는 미응답="") 저장
+      const payload = { IP: clientIp || "", mode };
+      for (let i = 1; i <= 50; i++) payload["Q" + i] = "";
+      Object.assign(payload, answers);
 
       try {
-        // application/x-www-form-urlencoded 로 전송
         const params = new URLSearchParams();
-        params.append("data", JSON.stringify(payload));
+        params.append("payload", JSON.stringify(payload));
 
-        const res = await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: params
-        });
-
+        const res = await fetch(SCRIPT_URL, { method: "POST", body: params });
         const text = await res.text();
-        let data = null;
+
+        let data;
         try {
           data = JSON.parse(text);
         } catch (e) {
-          console.warn("서버 응답이 JSON이 아닙니다:", text);
-          alert("서버 응답 형식이 올바르지 않습니다. (웹앱 배포/권한 설정을 확인해 주세요)");
+          console.error("서버 응답이 JSON이 아님:", text);
+          alert("서버 응답이 올바르지 않습니다. (웹앱 배포/권한/URL 확인 필요)");
           return;
         }
 
-        if (data && data.status === "ok") {
-          if (data.ID) {
-            previousId = data.ID;
-            currentIdText.textContent = previousId;
-            currentIdBanner.classList.remove("hidden");
-            completionIdText.textContent = previousId;
-          }
+        if (data.status !== "ok") {
+          alert("서버 오류: " + (data.message || "unknown"));
+          return;
+        }
 
-          if (mode === "TEMP") {
-            alert("임시 저장되었습니다.");
-          } else if (mode === "FINAL") {
-            alert("설문 제출을 완료하였습니다.");
-            showCompletionScreen();
-          }
+        // Apps Script 응답: { status:"ok", id: 1234567 }
+        previousId = data.id;
+        currentIdText.textContent = previousId;
+        currentIdBanner.classList.remove("hidden");
+        completionIdText.textContent = previousId;
+
+        if (mode === "TEMP") {
+          alert("임시 저장되었습니다.");
         } else {
-          alert("저장 처리 중 오류가 발생했습니다.");
+          alert("설문 제출을 완료하였습니다.");
+          showCompletionScreen();
         }
       } catch (error) {
-        console.error("전송 오류:", error);
+        console.error("fetch 실패:", error);
         alert("제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
       }
     }
 
-    // 초기 실행
     document.addEventListener("DOMContentLoaded", async () => {
+      renderTopicCards();
       await fetchClientIp();
-      await loadPreviousResponse();
+      await loadPreviousResponseOptional(); // 현재는 옵션(조회 비활성)
 
-      if (!isFinalSubmitted) {
-        renderTopicCards();
-        btnGoToSurvey.addEventListener("click", goToSurveyStep);
-        btnBack.addEventListener("click", backToTopicStep);
-        btnSelectAllTopics.addEventListener("click", selectAllTopics);
-        btnTempSave.addEventListener("click", () => saveSurvey("TEMP"));
-        btnFinalSubmit.addEventListener("click", () => saveSurvey("FINAL"));
-      }
+      btnGoToSurvey.addEventListener("click", goToSurveyStep);
+      btnBack.addEventListener("click", backToTopicStep);
+      btnSelectAllTopics.addEventListener("click", selectAllTopics);
+      btnTempSave.addEventListener("click", () => saveSurvey("TEMP"));
+      btnFinalSubmit.addEventListener("click", () => saveSurvey("FINAL"));
     });
   </script>
 </body>
